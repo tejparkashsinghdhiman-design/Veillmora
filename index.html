@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Veillmora</title>
+<meta name="description" content="Veillmora is a small store for digital goods, opening soon.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<style>
+/* Layout: wordmark-led holding storefront. One veil motif (translucent panels over a circle) in the hero,
+   repeated as a lifting veil on each shelf card. Everything else stays quiet. */
+:root {
+  --bg: #F3F7F6;
+  --surface: #FFFFFF;
+  --fg: #0E1A19;
+  --muted: #566866;
+  --line: #D3DEDC;
+  --accent: #1E6F69;
+  --accent-ink: #FFFFFF;
+  --veil: rgba(255, 255, 255, 0.74);
+  --tint: rgba(30, 111, 105, 0.07);
+  --font-display: "Avenir Next", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #091211;
+    --surface: #101C1B;
+    --fg: #E6F0EE;
+    --muted: #93A8A5;
+    --line: #213432;
+    --accent: #6CC4BC;
+    --accent-ink: #062321;
+    --veil: rgba(16, 28, 27, 0.74);
+    --tint: rgba(108, 196, 188, 0.08);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #091211;
+  --surface: #101C1B;
+  --fg: #E6F0EE;
+  --muted: #93A8A5;
+  --line: #213432;
+  --accent: #6CC4BC;
+  --accent-ink: #062321;
+  --veil: rgba(16, 28, 27, 0.74);
+  --tint: rgba(108, 196, 188, 0.08);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin-inline: auto; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* Top bar */
+.top {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 22px;
+}
+.mark {
+  font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+  letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+}
+.status {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; font-size: 0.82rem; color: var(--muted); background: var(--surface);
+}
+.status::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+}
+
+/* Hero */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 40px; align-items: center; padding-block: 56px 88px;
+}
+.hero h1 {
+  font-family: var(--font-display); font-weight: 300;
+  font-size: clamp(3rem, 12.5vw, 6.6rem); line-height: 1; letter-spacing: -0.035em;
+  margin: 0 0 24px; text-wrap: balance; overflow-wrap: anywhere;
+}
+.hero p.lede {
+  font-size: 1.2rem; color: var(--muted); max-width: 34ch; margin: 0 0 32px;
+}
+.btn {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  font-weight: 600; text-decoration: none; padding: 13px 22px; border-radius: 10px;
+}
+.btn:hover { filter: brightness(1.08); }
+.art { width: 100%; max-width: 380px; justify-self: center; }
+.art svg { display: block; width: 100%; height: auto; }
+.panel { fill: var(--accent); transform-box: fill-box; animation: lift 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.panel:nth-of-type(1) { fill-opacity: 0.10; animation-delay: 0ms; }
+.panel:nth-of-type(2) { fill-opacity: 0.16; animation-delay: 90ms; }
+.panel:nth-of-type(3) { fill-opacity: 0.26; animation-delay: 180ms; }
+.panel:nth-of-type(4) { fill-opacity: 0.38; animation-delay: 270ms; }
+@keyframes lift { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Shelves */
+.shelves { border-top: 1px solid var(--line); padding-block: 72px; }
+.label {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin: 0 0 14px;
+}
+.shelves h2 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.6rem, 4.4vw, 2.4rem); line-height: 1.2; letter-spacing: -0.02em;
+  margin: 0 0 40px; max-width: 22ch; text-wrap: balance;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 20px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  overflow: hidden; min-width: 0;
+}
+.card-art {
+  position: relative; aspect-ratio: 4 / 3; max-width: 100%; background: var(--tint); overflow: hidden;
+}
+.frame {
+  position: absolute; inset: 20% 26%; border: 1.5px solid var(--accent); border-radius: 12px; opacity: 0.55;
+}
+.card-art::after {
+  content: ""; position: absolute; left: 22%; right: 22%; bottom: 14%; height: 1.5px; background: var(--accent); opacity: 0.4;
+}
+.veil {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background: var(--veil); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  transition: transform 520ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.card:hover .veil { transform: translateY(-58%); }
+.card-body { padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+.card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; margin: 0; letter-spacing: -0.01em; }
+.card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.meta {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px;
+  font-size: 0.82rem; color: var(--muted);
+}
+
+/* Notice */
+.notice {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  padding: 28px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin-bottom: 72px;
+}
+.notice strong { font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; letter-spacing: -0.01em; }
+.notice span { color: var(--muted); }
+
+.privacy { border-top: 1px solid var(--line); padding-block: 56px 72px; }
+.privacy h2 {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.4rem, 3.6vw, 1.9rem); line-height: 1.2; letter-spacing: -0.02em;
+  margin: 0 0 24px; text-wrap: balance;
+}
+.privacy p { color: var(--muted); max-width: 62ch; margin: 0 0 16px; }
+.privacy p.updated { font-size: 0.86rem; margin-top: 24px; }
+
+footer {
+  border-top: 1px solid var(--line); padding-block: 28px 36px; color: var(--muted); font-size: 0.86rem;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+footer a { text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 32px 64px; gap: 48px; }
+  .art { max-width: 300px; justify-self: start; }
+  .shelves { padding-block: 56px; }
+  .notice { padding: 22px; margin-bottom: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+  .veil { transition: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#top" id="top">Veillmora</a>
+    <span class="status">Store opening soon</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Veillmora</h1>
+        <p class="lede">A small store for digital goods, opening soon.</p>
+        <a class="btn" href="#shelves">See the shelves</a>
+      </div>
+      <div class="art">
+        <svg viewBox="0 0 400 400" role="img" aria-label="Translucent vertical panels partly covering a circle">
+          <circle cx="200" cy="200" r="132" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+          <circle cx="200" cy="200" r="72" fill="var(--accent)" fill-opacity="0.9"/>
+          <rect class="panel" x="52" y="36" width="96" height="328" rx="48"/>
+          <rect class="panel" x="128" y="36" width="96" height="328" rx="48"/>
+          <rect class="panel" x="204" y="36" width="96" height="328" rx="48"/>
+          <rect class="panel" x="280" y="36" width="72" height="328" rx="36"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="shelves" id="shelves">
+      <p class="label">On the shelves</p>
+      <h2>The first products are being prepared.</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card-art"><div class="frame"></div><div class="veil">Unveiling soon</div></div>
+          <div class="card-body">
+            <h3>To be unveiled</h3>
+            <p>Name, preview and price appear here when this product goes live.</p>
+            <div class="meta"><span>Digital product</span><span>Price at launch</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-art"><div class="frame"></div><div class="veil">Unveiling soon</div></div>
+          <div class="card-body">
+            <h3>To be unveiled</h3>
+            <p>Name, preview and price appear here when this product goes live.</p>
+            <div class="meta"><span>Digital product</span><span>Price at launch</span></div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-art"><div class="frame"></div><div class="veil">Unveiling soon</div></div>
+          <div class="card-body">
+            <h3>To be unveiled</h3>
+            <p>Name, preview and price appear here when this product goes live.</p>
+            <div class="meta"><span>Digital product</span><span>Price at launch</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="notice">
+      <strong>Checkout is being connected.</strong>
+      <span>Orders open as soon as it is ready.</span>
+    </div>
+    <section class="privacy" id="privacy">
+      <p class="label">Privacy</p>
+      <h2>What this site collects</h2>
+      <p>Veillmora does not ask for or store any personal information. There are no forms, accounts or sign-ups, and the site's own code sets no cookies and runs no analytics or advertising.</p>
+      <p>Text on this site uses fonts already on your device, so no font provider is contacted when you visit.</p>
+      <p>The site is hosted on a third-party platform. Like any host, it may keep standard technical logs such as IP address and browser type. Those logs fall under the host's own policy.</p>
+      <p>When ordering opens, checkout will be run by Shopify, which will collect the details needed to process an order. This section will be updated with full details before that happens.</p>
+      <p class="updated">Last updated 24 October 2026.</p>
+    </section>
+  </main>
+
+  <footer><span>&copy; 2026 Veillmora</span><a href="#privacy">Privacy</a></footer>
+</div>
+</body>
+</html>
